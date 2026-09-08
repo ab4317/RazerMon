@@ -48,9 +48,9 @@ enum ProtocolError: Error, CustomStringConvertible {
 
     var description: String {
         switch self {
-        case .invalidLength(let length): return "expected a 90-byte report, got \(length)"
-        case .invalidChecksum: return "report checksum does not match"
-        case .staleResponse: return "device returned a stale or unrelated response"
+        case .invalidLength(let length): return L10n.format("error.protocol.invalid_length", length)
+        case .invalidChecksum: return L10n.text("error.protocol.invalid_checksum")
+        case .staleResponse: return L10n.text("error.protocol.stale_response")
         case .malformedResponse(let detail): return detail
         }
     }
@@ -109,7 +109,7 @@ enum RazerCommands {
         let payload = response.bytes[8..<88]
         let serialBytes = payload.prefix { $0 != 0 }
         guard !serialBytes.isEmpty, let serial = String(bytes: serialBytes, encoding: .ascii) else {
-            throw ProtocolError.malformedResponse("serial-number response has no ASCII serial")
+            throw ProtocolError.malformedResponse(L10n.text("error.protocol.missing_serial"))
         }
         return serial
     }

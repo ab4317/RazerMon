@@ -261,11 +261,11 @@ final class PermissionAccessoryPanelView: NSView {
 
         let arrow = NSImageView()
         arrow.translatesAutoresizingMaskIntoConstraints = false
-        arrow.image = NSImage(systemSymbolName: "arrow.up", accessibilityDescription: "Drag upward")
+        arrow.image = NSImage(systemSymbolName: "arrow.up", accessibilityDescription: L10n.text("permission.guide.drag_upward"))
         arrow.symbolConfiguration = NSImage.SymbolConfiguration(pointSize: 26, weight: .bold)
         arrow.contentTintColor = .systemBlue
 
-        let instructionLabel = NSTextField(labelWithString: "Drag RazerMon above to allow Input Monitoring")
+        let instructionLabel = NSTextField(labelWithString: L10n.text("permission.guide.instruction"))
         instructionLabel.font = .systemFont(ofSize: 14, weight: .medium)
         instructionLabel.textColor = NSColor(calibratedWhite: 0.4, alpha: 1)
         instructionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -359,7 +359,7 @@ final class AccessoryBackButton: NSButton {
         translatesAutoresizingMaskIntoConstraints = false
         isBordered = false
         focusRingType = .none
-        image = NSImage(systemSymbolName: "chevron.left", accessibilityDescription: "Back")
+        image = NSImage(systemSymbolName: "chevron.left", accessibilityDescription: L10n.text("accessibility.back"))
         contentTintColor = NSColor.labelColor.withAlphaComponent(0.72)
         (cell as? NSButtonCell)?.imagePosition = .imageOnly
     }

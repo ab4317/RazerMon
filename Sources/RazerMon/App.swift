@@ -109,8 +109,8 @@ final class RazerMonApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
             }
         } catch {
             let alert = NSAlert()
-            alert.messageText = "Unable to Change Launch at Login"
-            alert.informativeText = "Move RazerMon.app to the Applications folder, then try again.\n\n\(error.localizedDescription)"
+            alert.messageText = L10n.text("launch_at_login.error.title")
+            alert.informativeText = L10n.format("launch_at_login.error.message", error.localizedDescription)
             alert.alertStyle = .warning
             alert.runModal()
         }
@@ -179,11 +179,11 @@ final class RazerMonApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
         guard !hasInputMonitoringPermission, !permissionPromptIsShowing else { return }
         permissionPromptIsShowing = true
         let alert = NSAlert()
-        alert.messageText = "RazerMon Requires Input Monitoring Access"
-        alert.informativeText = "RazerMon needs this permission to read battery levels from connected Razer devices. It does not record keystrokes or mouse movement."
+        alert.messageText = L10n.text("permission.alert.title")
+        alert.informativeText = L10n.text("permission.alert.message")
         alert.alertStyle = .informational
-        alert.addButton(withTitle: "Open Settings")
-        alert.addButton(withTitle: "Not Now")
+        alert.addButton(withTitle: L10n.text("permission.alert.open_settings"))
+        alert.addButton(withTitle: L10n.text("permission.alert.not_now"))
         let response = alert.runModal()
         permissionPromptIsShowing = false
         if response == .alertFirstButtonReturn, !hasInputMonitoringPermission {
@@ -291,18 +291,18 @@ final class RazerMonApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private func rebuildMenu() {
         menu.removeAllItems()
         if !hasInputMonitoringPermission {
-            addDisabled("Input Monitoring permission required")
-            let permission = NSMenuItem(title: "Enable Input Monitoring…", action: #selector(showPermissionFromMenu), keyEquivalent: "")
+            addDisabled(L10n.text("menu.permission_required"))
+            let permission = NSMenuItem(title: L10n.text("menu.enable_input_monitoring"), action: #selector(showPermissionFromMenu), keyEquivalent: "")
             permission.target = self
             menu.addItem(permission)
         } else if devices.isEmpty {
-            addDisabled(isRefreshing ? "Reading devices…" : (errorMessage ?? "No connected Razer devices"))
+            addDisabled(isRefreshing ? L10n.text("menu.reading_devices") : (errorMessage ?? L10n.text("menu.no_devices")))
         } else {
             for device in devices {
-                let batteryText = device.batteryPercent.map { "\($0)%" } ?? "Reading…"
-                let item = NSMenuItem(title: "\(device.name), \(batteryText)", action: nil, keyEquivalent: "")
+                let batteryText = device.batteryPercent.map { "\($0)%" } ?? L10n.text("menu.reading_battery")
+                let item = NSMenuItem(title: L10n.format("menu.device_summary", device.name, batteryText), action: nil, keyEquivalent: "")
                 item.view = DeviceMenuItemView(device: device)
-                item.toolTip = "Serial: \(device.serialNumber)"
+                item.toolTip = L10n.format("menu.serial_number", device.serialNumber)
                 // A disabled NSMenuItem is always shown in gray. These entries
                 // are informational, but the connected devices are healthy.
                 item.isEnabled = true
@@ -310,20 +310,20 @@ final class RazerMonApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
             }
         }
         menu.addItem(.separator())
-        let refresh = NSMenuItem(title: "Refresh", action: #selector(refreshFromMenu), keyEquivalent: "r")
+        let refresh = NSMenuItem(title: L10n.text("menu.refresh"), action: #selector(refreshFromMenu), keyEquivalent: "r")
         refresh.target = self
         refresh.isEnabled = hasInputMonitoringPermission
         menu.addItem(refresh)
-        let launchAtLogin = NSMenuItem(title: "Launch at Login", action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
+        let launchAtLogin = NSMenuItem(title: L10n.text("menu.launch_at_login"), action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
         launchAtLogin.target = self
         launchAtLogin.isEnabled = true
         launchAtLogin.state = SMAppService.mainApp.status == .enabled ? .on : .off
         if SMAppService.mainApp.status == .requiresApproval {
-            launchAtLogin.toolTip = "Approval is required in System Settings under Login Items"
+            launchAtLogin.toolTip = L10n.text("menu.launch_at_login.approval_required")
         }
         menu.addItem(launchAtLogin)
         menu.addItem(.separator())
-        let exit = NSMenuItem(title: "Exit", action: #selector(exitApp), keyEquivalent: "q")
+        let exit = NSMenuItem(title: L10n.text("menu.exit"), action: #selector(exitApp), keyEquivalent: "q")
         exit.target = self
         menu.addItem(exit)
     }
@@ -390,9 +390,9 @@ private final class DeviceMenuItemView: NSView {
         setAccessibilityElement(true)
         setAccessibilityRole(.staticText)
         if let batteryPercent = device.batteryPercent {
-            setAccessibilityLabel("\(device.name), battery \(batteryPercent) percent")
+            setAccessibilityLabel(L10n.format("accessibility.device_battery", device.name, batteryPercent))
         } else {
-            setAccessibilityLabel("\(device.name), reading battery level")
+            setAccessibilityLabel(L10n.format("accessibility.device_reading", device.name))
         }
     }
 
@@ -405,13 +405,13 @@ private final class DeviceMenuItemView: NSView {
         switch kind {
         case .mouse:
             symbol = "computermouse"
-            description = "Mouse"
+            description = L10n.text("accessibility.mouse")
         case .keyboard:
             symbol = "keyboard"
-            description = "Keyboard"
+            description = L10n.text("accessibility.keyboard")
         case .unknown:
             symbol = "dot.radiowaves.left.and.right"
-            description = "Device"
+            description = L10n.text("accessibility.device")
         }
         let image = NSImage(systemSymbolName: symbol, accessibilityDescription: description) ?? NSImage()
         image.isTemplate = true
@@ -420,7 +420,7 @@ private final class DeviceMenuItemView: NSView {
 
     private static func batteryImage(_ percentage: Int) -> NSImage {
         let symbol = percentage > 75 ? "battery.100" : percentage > 50 ? "battery.75" : percentage > 25 ? "battery.50" : percentage > 10 ? "battery.25" : "battery.0"
-        let image = NSImage(systemSymbolName: symbol, accessibilityDescription: "Battery \(percentage) percent") ?? NSImage()
+        let image = NSImage(systemSymbolName: symbol, accessibilityDescription: L10n.format("accessibility.battery", percentage)) ?? NSImage()
         image.isTemplate = true
         return image
     }

@@ -10,11 +10,11 @@ enum HIDError: Error, CustomStringConvertible {
 
     var description: String {
         switch self {
-        case .managerOpenFailed(let code): return "Could not open HID manager (\(code))"
-        case .noCompatibleInterface: return "Razer receiver interface not found"
-        case .deviceOpenFailed(let code): return "Could not open Razer receiver (\(code))"
-        case .setReportFailed(let code): return "Battery request failed (\(code))"
-        case .getReportFailed(let code): return "Battery response failed (\(code))"
+        case .managerOpenFailed(let code): return L10n.format("error.hid.manager_open", code)
+        case .noCompatibleInterface: return L10n.text("error.hid.interface_not_found")
+        case .deviceOpenFailed(let code): return L10n.format("error.hid.device_open", code)
+        case .setReportFailed(let code): return L10n.format("error.hid.battery_request", code)
+        case .getReportFailed(let code): return L10n.format("error.hid.battery_response", code)
         }
     }
 }

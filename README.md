@@ -2,7 +2,7 @@
 
 RazerMon is a native, read-only macOS menu bar battery monitor for compatible wireless Razer mice and keyboards. It shows battery percentages for supported HyperSpeed, USB receiver, and Bluetooth device endpoints without requiring Razer Synapse.
 
-Current version: **0.2.0**
+Current version: **0.3.0**
 
 ![RazerMon showing three wireless devices and their battery levels](docs/assets/razermon-menu.png)
 
@@ -23,6 +23,7 @@ RazerMon only sends device identity, paired-product, and battery-level queries. 
 - Refreshes device topology immediately when the menu opens
 - Pauses transient checks during system sleep and synchronizes once after wake
 - Runs natively on Apple silicon and Intel Macs
+- Localized in English, Simplified Chinese, Traditional Chinese, Japanese, Korean, German, French, Spanish, Brazilian Portuguese, Italian, and Russian
 - Requires no kernel extension and makes no device configuration changes
 
 ## Requirements

@@ -21,6 +21,8 @@
 		01000000000000000000000C /* BatteryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000010 /* BatteryProtocol.swift */; };
 		01000000000000000000000D /* DeviceCatalog.json in Resources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000011 /* DeviceCatalog.json */; };
 		01000000000000000000000E /* HIDDeviceRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000012 /* HIDDeviceRegistry.swift */; };
+		01000000000000000000000F /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000013 /* Localization.swift */; };
+		010000000000000000000010 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000014 /* Localizable.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +54,8 @@
 		020000000000000000000010 /* BatteryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryProtocol.swift; sourceTree = "<group>"; };
 		020000000000000000000011 /* DeviceCatalog.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = DeviceCatalog.json; sourceTree = "<group>"; };
 		020000000000000000000012 /* HIDDeviceRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HIDDeviceRegistry.swift; sourceTree = "<group>"; };
+		020000000000000000000013 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
+		020000000000000000000014 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +103,7 @@
 				020000000000000000000010 /* BatteryProtocol.swift */,
 				02000000000000000000000F /* DeviceCatalog.swift */,
 				020000000000000000000012 /* HIDDeviceRegistry.swift */,
+				020000000000000000000013 /* Localization.swift */,
 				020000000000000000000002 /* HIDTransport.swift */,
 				020000000000000000000003 /* PermissionGuide.swift */,
 				020000000000000000000004 /* RazerIcon.swift */,
@@ -116,6 +121,7 @@
 				020000000000000000000008 /* StatusIcon.png */,
 				02000000000000000000000A /* Info.plist */,
 				02000000000000000000000B /* RazerMon.entitlements */,
+				020000000000000000000014 /* Localizable.xcstrings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -207,7 +213,17 @@
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				de,
 				en,
+				es,
+				fr,
+				it,
+				ja,
+				ko,
+				"pt-BR",
+				ru,
+				zh-Hans,
+				zh-Hant,
 				Base,
 			);
 			mainGroup = 050000000000000000000001;
@@ -228,6 +244,7 @@
 			files = (
 				010000000000000000000007 /* AppIcon.icon in Resources */,
 				01000000000000000000000D /* DeviceCatalog.json in Resources */,
+				010000000000000000000010 /* Localizable.xcstrings in Resources */,
 				010000000000000000000008 /* StatusIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -250,6 +267,7 @@
 				01000000000000000000000C /* BatteryProtocol.swift in Sources */,
 				01000000000000000000000B /* DeviceCatalog.swift in Sources */,
 				01000000000000000000000E /* HIDDeviceRegistry.swift in Sources */,
+				01000000000000000000000F /* Localization.swift in Sources */,
 				010000000000000000000002 /* HIDTransport.swift in Sources */,
 				010000000000000000000003 /* PermissionGuide.swift in Sources */,
 				010000000000000000000004 /* RazerIcon.swift in Sources */,
