@@ -23,6 +23,16 @@ final class RazerProtocolTests: XCTestCase {
         XCTAssertEqual(PairedDevice(transactionID: 0xFF, serialNumber: "B", batteryRaw: 153).batteryPercent, 60)
     }
 
+    func testBatteryCacheFreshnessIsPerDevice() {
+        let now = Date(timeIntervalSince1970: 1_000)
+        let cached = CachedDeviceStatus(
+            status: DeviceStatus(name: "Mouse", kind: .mouse, serialNumber: "A", batteryPercent: 80),
+            batteryReadAt: now.addingTimeInterval(-299)
+        )
+        XCTAssertTrue(cached.hasFreshBattery(at: now, maximumAge: 300))
+        XCTAssertFalse(cached.hasFreshBattery(at: now.addingTimeInterval(2), maximumAge: 300))
+    }
+
     func testRejectsCachedResponseFromAnotherTransaction() throws {
         let request = RazerCommands.battery(transactionID: 0x3F)
         var stale = RazerCommands.battery(transactionID: 0x1F).bytes
@@ -48,12 +58,25 @@ final class RazerProtocolTests: XCTestCase {
     }
 
     func testProductNamesOnlyDropRedundantVendorPrefix() {
-        XCTAssertEqual(RazerProducts.name(for: 0x00B7), "DeathAdder V3 Pro Wireless")
-        XCTAssertEqual(RazerProducts.name(for: 0x0290), "DeathStalker V2 Pro Wireless")
+        XCTAssertEqual(RazerProducts.name(for: 0x00B7), "DeathAdder V3 Pro (Wireless)")
+        XCTAssertEqual(RazerProducts.name(for: 0x0290), "DeathStalker V2 Pro (Wireless)")
         XCTAssertEqual(RazerProducts.name(for: 0x1234), "Device (1532:1234)")
         XCTAssertEqual(RazerProducts.displayName(from: "Future Model X"), "Future Model X")
         XCTAssertEqual(RazerProducts.product(for: 0x00B7).kind, .mouse)
         XCTAssertEqual(RazerProducts.product(for: 0x0290).kind, .keyboard)
         XCTAssertEqual(RazerProducts.product(for: 0x1234).kind, .unknown)
+    }
+
+    func testBundledCatalogIncludesOpenRazerDevicesAndVerifiedHardware() {
+        let catalog = DeviceCatalog.bundled
+        XCTAssertEqual(catalog.schemaVersion, 1)
+        XCTAssertEqual(catalog.products.count, 42)
+        XCTAssertTrue(catalog.products.allSatisfy { $0.batteryProtocol != nil })
+        XCTAssertEqual(catalog.product(for: 0x0083)?.name, "Razer Basilisk X HyperSpeed")
+        XCTAssertEqual(catalog.product(for: 0x025C)?.kind, .keyboard)
+        XCTAssertEqual(catalog.product(for: 0x00B7)?.verified, true)
+        XCTAssertEqual(catalog.product(for: 0x0290)?.verified, true)
+        XCTAssertEqual(catalog.product(for: 0x0094)?.verified, true)
+        XCTAssertTrue(catalog.batteryCandidates.contains { $0.numericProductID == 0x00B7 })
     }
 }

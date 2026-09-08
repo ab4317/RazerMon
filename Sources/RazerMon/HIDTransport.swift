@@ -22,10 +22,12 @@ enum HIDError: Error, CustomStringConvertible {
 final class HIDTransport {
     private let manager: IOHIDManager
     private let device: IOHIDDevice
+    let productID: UInt16
 
-    init(vendorID: Int = 0x1532, productID: Int = 0x00B7) throws {
+    init(vendorID: Int = 0x1532, productID: Int) throws {
         let manager = IOHIDManagerCreate(kCFAllocatorDefault, IOOptionBits(kIOHIDOptionsTypeNone))
         self.manager = manager
+        self.productID = UInt16(productID)
         let matching: [String: Any] = [
             kIOHIDVendorIDKey: vendorID
         ]
@@ -37,12 +39,18 @@ final class HIDTransport {
         guard let device = devices.first(where: {
             Self.intProperty(kIOHIDProductIDKey, of: $0) == productID
                 && Self.intProperty(kIOHIDPrimaryUsagePageKey, of: $0) == kHIDPage_GenericDesktop
-                && Self.intProperty(kIOHIDPrimaryUsageKey, of: $0) == kHIDUsage_GD_Mouse
+                && Self.deviceKind(of: $0) != nil
                 && Self.intProperty(kIOHIDMaxFeatureReportSizeKey, of: $0) >= RazerReport.length
-        }) else { throw HIDError.noCompatibleInterface }
+        }) else {
+            IOHIDManagerClose(manager, IOOptionBits(kIOHIDOptionsTypeNone))
+            throw HIDError.noCompatibleInterface
+        }
         self.device = device
         let deviceResult = IOHIDDeviceOpen(device, IOOptionBits(kIOHIDOptionsTypeNone))
-        guard deviceResult == kIOReturnSuccess else { throw HIDError.deviceOpenFailed(deviceResult) }
+        guard deviceResult == kIOReturnSuccess else {
+            IOHIDManagerClose(manager, IOOptionBits(kIOHIDOptionsTypeNone))
+            throw HIDError.deviceOpenFailed(deviceResult)
+        }
     }
 
     deinit {

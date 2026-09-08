@@ -1,0 +1,15 @@
+{
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "image-name" : "AppIcon.png",
+          "name" : "RazerMon"
+        }
+      ]
+    }
+  ],
+  "supported-platforms" : {
+    "squares" : "shared"
+  }
+}

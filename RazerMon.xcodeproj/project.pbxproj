@@ -13,10 +13,14 @@
 		010000000000000000000004 /* RazerIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000004 /* RazerIcon.swift */; };
 		010000000000000000000005 /* RazerMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000005 /* RazerMonitor.swift */; };
 		010000000000000000000006 /* RazerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000006 /* RazerProtocol.swift */; };
-		010000000000000000000007 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000007 /* Assets.xcassets */; };
+		010000000000000000000007 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000007 /* AppIcon.icon */; };
 		010000000000000000000008 /* StatusIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000008 /* StatusIcon.png */; };
 		010000000000000000000009 /* RazerProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000009 /* RazerProtocolTests.swift */; };
 		01000000000000000000000A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02000000000000000000000D /* XCTest.framework */; };
+		01000000000000000000000B /* DeviceCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02000000000000000000000F /* DeviceCatalog.swift */; };
+		01000000000000000000000C /* BatteryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000010 /* BatteryProtocol.swift */; };
+		01000000000000000000000D /* DeviceCatalog.json in Resources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000011 /* DeviceCatalog.json */; };
+		01000000000000000000000E /* HIDDeviceRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000012 /* HIDDeviceRegistry.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +40,7 @@
 		020000000000000000000004 /* RazerIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RazerIcon.swift; sourceTree = "<group>"; };
 		020000000000000000000005 /* RazerMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RazerMonitor.swift; sourceTree = "<group>"; };
 		020000000000000000000006 /* RazerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RazerProtocol.swift; sourceTree = "<group>"; };
-		020000000000000000000007 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		020000000000000000000007 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		020000000000000000000008 /* StatusIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StatusIcon.png; sourceTree = "<group>"; };
 		020000000000000000000009 /* RazerProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RazerProtocolTests.swift; sourceTree = "<group>"; };
 		02000000000000000000000A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -44,6 +48,10 @@
 		02000000000000000000000C /* RazerMon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RazerMon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02000000000000000000000D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = System/Library/Frameworks/XCTest.framework; sourceTree = SDKROOT; };
 		02000000000000000000000E /* RazerMonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RazerMonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		02000000000000000000000F /* DeviceCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCatalog.swift; sourceTree = "<group>"; };
+		020000000000000000000010 /* BatteryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryProtocol.swift; sourceTree = "<group>"; };
+		020000000000000000000011 /* DeviceCatalog.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = DeviceCatalog.json; sourceTree = "<group>"; };
+		020000000000000000000012 /* HIDDeviceRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HIDDeviceRegistry.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +96,9 @@
 			isa = PBXGroup;
 			children = (
 				020000000000000000000001 /* App.swift */,
+				020000000000000000000010 /* BatteryProtocol.swift */,
+				02000000000000000000000F /* DeviceCatalog.swift */,
+				020000000000000000000012 /* HIDDeviceRegistry.swift */,
 				020000000000000000000002 /* HIDTransport.swift */,
 				020000000000000000000003 /* PermissionGuide.swift */,
 				020000000000000000000004 /* RazerIcon.swift */,
@@ -100,7 +111,8 @@
 		050000000000000000000004 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				020000000000000000000007 /* Assets.xcassets */,
+				020000000000000000000007 /* AppIcon.icon */,
+				020000000000000000000011 /* DeviceCatalog.json */,
 				020000000000000000000008 /* StatusIcon.png */,
 				02000000000000000000000A /* Info.plist */,
 				02000000000000000000000B /* RazerMon.entitlements */,
@@ -214,7 +226,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				010000000000000000000007 /* Assets.xcassets in Resources */,
+				010000000000000000000007 /* AppIcon.icon in Resources */,
+				01000000000000000000000D /* DeviceCatalog.json in Resources */,
 				010000000000000000000008 /* StatusIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -234,6 +247,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				010000000000000000000001 /* App.swift in Sources */,
+				01000000000000000000000C /* BatteryProtocol.swift in Sources */,
+				01000000000000000000000B /* DeviceCatalog.swift in Sources */,
+				01000000000000000000000E /* HIDDeviceRegistry.swift in Sources */,
 				010000000000000000000002 /* HIDTransport.swift in Sources */,
 				010000000000000000000003 /* PermissionGuide.swift in Sources */,
 				010000000000000000000004 /* RazerIcon.swift in Sources */,
@@ -278,7 +294,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.github.razermon.RazerMon;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.ab4317.razermon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_VERSION = 5.0;
@@ -301,7 +317,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.github.razermon.RazerMon;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.ab4317.razermon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
@@ -316,7 +332,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.github.razermon.RazerMonTests;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.ab4317.razermon.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RazerMon.app/Contents/MacOS/RazerMon";
@@ -331,7 +347,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.github.razermon.RazerMonTests;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.ab4317.razermon.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RazerMon.app/Contents/MacOS/RazerMon";

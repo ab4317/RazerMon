@@ -8,12 +8,27 @@ final class RazerMonApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var statusItem: NSStatusItem!
     private let menu = NSMenu()
     private var devices: [DeviceStatus] = []
+    private var cachedDevices: [String: CachedDeviceStatus] = [:]
     private var errorMessage: String?
     private var isRefreshing = false
+    private var refreshRequestedWhileRefreshing = false
+    private var batteryRefreshRequestedWhileRefreshing = false
     private var refreshTimer: Timer?
+    private var menuTrackingTimer: Timer?
     private var permissionTimer: Timer?
+    private var powerObservers: [NSObjectProtocol] = []
+    private var isPreparingForSleep = false
     private var permissionGuide: PermissionGuideWindowController?
     private var permissionPromptIsShowing = false
+    private let deviceRegistry = HIDDeviceRegistry()
+    private var lastRefreshDate: Date?
+
+    private enum RefreshPolicy {
+        static let openMenuInterval: TimeInterval = 15
+        static let batteryCacheInterval: TimeInterval = 5 * 60
+        static let backgroundInterval: TimeInterval = 15 * 60
+        static let permissionCheckInterval: TimeInterval = 2
+    }
 
     static func main() {
         let app = NSApplication.shared
@@ -35,23 +50,46 @@ final class RazerMonApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.delegate = self
         statusItem.menu = menu
         rebuildMenu()
+        installPowerObservers()
+
+        deviceRegistry.onChange = { [weak self] _ in
+            self?.refreshIfAllowed(force: true)
+        }
 
         if hasInputMonitoringPermission {
-            refresh()
+            startDeviceRegistry()
         } else {
             showPermissionPrompt()
+            startPermissionTimer()
         }
-        refreshTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { [weak self] _ in self?.refreshIfAllowed() }
-        permissionTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in self?.permissionDidChange() }
+        let timer = Timer(timeInterval: RefreshPolicy.backgroundInterval, repeats: true) {
+            [weak self] _ in self?.refreshIfAllowed(minimumInterval: RefreshPolicy.backgroundInterval)
+        }
+        timer.tolerance = RefreshPolicy.backgroundInterval * 0.1
+        RunLoop.main.add(timer, forMode: .default)
+        refreshTimer = timer
     }
 
     func applicationWillTerminate(_ notification: Notification) {
         refreshTimer?.invalidate()
+        menuTrackingTimer?.invalidate()
         permissionTimer?.invalidate()
+        for observer in powerObservers {
+            NSWorkspace.shared.notificationCenter.removeObserver(observer)
+        }
+        powerObservers.removeAll()
     }
 
-    func menuWillOpen(_ menu: NSMenu) { refreshIfAllowed() }
-    @objc private func refreshFromMenu() { refreshIfAllowed() }
+    func menuWillOpen(_ menu: NSMenu) {
+        refreshIfAllowed(force: true)
+        startMenuTrackingTimer()
+    }
+
+    func menuDidClose(_ menu: NSMenu) {
+        menuTrackingTimer?.invalidate()
+        menuTrackingTimer = nil
+    }
+    @objc private func refreshFromMenu() { refreshIfAllowed(force: true, forceBatteryRefresh: true) }
     @objc private func showPermissionFromMenu() { showPermissionPrompt() }
     @objc private func toggleLaunchAtLogin() {
         let service = SMAppService.mainApp
@@ -86,9 +124,55 @@ final class RazerMonApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private func permissionDidChange() {
         guard hasInputMonitoringPermission else { return }
+        permissionTimer?.invalidate()
+        permissionTimer = nil
         permissionGuide?.showAuthorizedState()
-        if devices.isEmpty && !isRefreshing { refresh() }
+        startDeviceRegistry()
         rebuildMenu()
+    }
+
+    private func startPermissionTimer() {
+        guard permissionTimer == nil else { return }
+        let timer = Timer(timeInterval: RefreshPolicy.permissionCheckInterval, repeats: true) {
+            [weak self] _ in self?.permissionDidChange()
+        }
+        timer.tolerance = RefreshPolicy.permissionCheckInterval * 0.1
+        RunLoop.main.add(timer, forMode: .default)
+        permissionTimer = timer
+    }
+
+    private func installPowerObservers() {
+        let notifications = NSWorkspace.shared.notificationCenter
+        powerObservers = [
+            notifications.addObserver(
+                forName: NSWorkspace.willSleepNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                self?.isPreparingForSleep = true
+                self?.menuTrackingTimer?.invalidate()
+                self?.menuTrackingTimer = nil
+            },
+            notifications.addObserver(
+                forName: NSWorkspace.didWakeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self else { return }
+                self.isPreparingForSleep = false
+                self.refreshIfAllowed(force: true)
+            }
+        ]
+    }
+
+    private func startDeviceRegistry() {
+        guard !deviceRegistry.isStarted else { return }
+        do {
+            try deviceRegistry.start()
+        } catch {
+            errorMessage = String(describing: error)
+            rebuildMenu()
+        }
     }
 
     private func showPermissionPrompt() {
@@ -120,25 +204,86 @@ final class RazerMonApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
         permissionGuide?.openSettingsAndPresent()
     }
 
-    private func refreshIfAllowed() {
+    private func refreshIfAllowed(
+        minimumInterval: TimeInterval = 0,
+        force: Bool = false,
+        forceBatteryRefresh: Bool = false
+    ) {
+        guard !isPreparingForSleep else { return }
         guard hasInputMonitoringPermission else { rebuildMenu(); return }
-        refresh()
+        if isRefreshing {
+            if force { refreshRequestedWhileRefreshing = true }
+            if forceBatteryRefresh { batteryRefreshRequestedWhileRefreshing = true }
+            return
+        }
+        if !force, let lastRefreshDate, Date().timeIntervalSince(lastRefreshDate) < minimumInterval { return }
+        refresh(forceBatteryRefresh: forceBatteryRefresh)
     }
 
-    private func refresh() {
+    private func startMenuTrackingTimer() {
+        guard menuTrackingTimer == nil else { return }
+        let timer = Timer(timeInterval: RefreshPolicy.openMenuInterval, repeats: true) { [weak self] _ in
+            self?.refreshIfAllowed(force: true)
+        }
+        timer.tolerance = RefreshPolicy.openMenuInterval * 0.1
+        RunLoop.main.add(timer, forMode: .common)
+        menuTrackingTimer = timer
+    }
+
+    private func refresh(forceBatteryRefresh: Bool = false) {
         guard !isRefreshing else { return }
+        let connectedProductIDs = deviceRegistry.connectedProductIDs
+        guard !connectedProductIDs.isEmpty else {
+            let menuNeedsUpdate = !devices.isEmpty || errorMessage != nil
+            devices = []
+            cachedDevices = [:]
+            errorMessage = nil
+            lastRefreshDate = Date()
+            if menuNeedsUpdate { rebuildMenu() }
+            return
+        }
         isRefreshing = true
-        rebuildMenu()
+        let cachedDevices = cachedDevices
         DispatchQueue.global(qos: .utility).async { [weak self] in
-            let result = Result { try RazerMonitor.readDevices() }
+            let result = Result {
+                try RazerMonitor.readDevices(
+                    connectedProductIDs: connectedProductIDs,
+                    cachedDevices: cachedDevices,
+                    batteryMaximumAge: RefreshPolicy.batteryCacheInterval,
+                    forceBatteryRefresh: forceBatteryRefresh,
+                    onDiscovery: { discoveredDevices in
+                        DispatchQueue.main.async { [weak self] in
+                            guard let self, self.devices != discoveredDevices else { return }
+                            self.devices = discoveredDevices
+                            self.rebuildMenu()
+                        }
+                    }
+                )
+            }
             DispatchQueue.main.async {
                 guard let self else { return }
                 self.isRefreshing = false
+                self.lastRefreshDate = Date()
+                let previousDevices = self.devices
+                let previousError = self.errorMessage
                 switch result {
-                case .success(let devices): self.devices = devices; self.errorMessage = nil
+                case .success(let cachedDevices):
+                    self.cachedDevices = Dictionary(
+                        uniqueKeysWithValues: cachedDevices.map { ($0.status.serialNumber, $0) }
+                    )
+                    self.devices = cachedDevices.map(\.status)
+                    self.errorMessage = nil
                 case .failure(let error): self.devices = []; self.errorMessage = String(describing: error)
                 }
-                self.rebuildMenu()
+                if self.devices != previousDevices || self.errorMessage != previousError {
+                    self.rebuildMenu()
+                }
+                if self.refreshRequestedWhileRefreshing {
+                    let forceBatteryRefresh = self.batteryRefreshRequestedWhileRefreshing
+                    self.refreshRequestedWhileRefreshing = false
+                    self.batteryRefreshRequestedWhileRefreshing = false
+                    self.refreshIfAllowed(force: true, forceBatteryRefresh: forceBatteryRefresh)
+                }
             }
         }
     }
@@ -154,7 +299,8 @@ final class RazerMonApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
             addDisabled(isRefreshing ? "Reading devices…" : (errorMessage ?? "No connected Razer devices"))
         } else {
             for device in devices {
-                let item = NSMenuItem(title: "\(device.name), \(device.batteryPercent)%", action: nil, keyEquivalent: "")
+                let batteryText = device.batteryPercent.map { "\($0)%" } ?? "Reading…"
+                let item = NSMenuItem(title: "\(device.name), \(batteryText)", action: nil, keyEquivalent: "")
                 item.view = DeviceMenuItemView(device: device)
                 item.toolTip = "Serial: \(device.serialNumber)"
                 // A disabled NSMenuItem is always shown in gray. These entries
@@ -166,7 +312,7 @@ final class RazerMonApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(.separator())
         let refresh = NSMenuItem(title: "Refresh", action: #selector(refreshFromMenu), keyEquivalent: "r")
         refresh.target = self
-        refresh.isEnabled = hasInputMonitoringPermission && !isRefreshing
+        refresh.isEnabled = hasInputMonitoringPermission
         menu.addItem(refresh)
         let launchAtLogin = NSMenuItem(title: "Launch at Login", action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
         launchAtLogin.target = self
@@ -206,13 +352,13 @@ private final class DeviceMenuItemView: NSView {
         name.font = .menuFont(ofSize: 0)
         name.textColor = .labelColor
 
-        let percentage = NSTextField(labelWithString: "\(device.batteryPercent)%")
+        let percentage = NSTextField(labelWithString: device.batteryPercent.map { "\($0)%" } ?? "—")
         percentage.translatesAutoresizingMaskIntoConstraints = false
         percentage.alignment = .right
         percentage.font = .monospacedDigitSystemFont(ofSize: NSFont.systemFontSize, weight: .regular)
         percentage.textColor = .labelColor
 
-        let battery = NSImageView(image: Self.batteryImage(device.batteryPercent))
+        let battery = NSImageView(image: Self.batteryImage(device.batteryPercent ?? 0))
         battery.translatesAutoresizingMaskIntoConstraints = false
         battery.imageScaling = .scaleProportionallyDown
 
@@ -243,7 +389,11 @@ private final class DeviceMenuItemView: NSView {
 
         setAccessibilityElement(true)
         setAccessibilityRole(.staticText)
-        setAccessibilityLabel("\(device.name), battery \(device.batteryPercent) percent")
+        if let batteryPercent = device.batteryPercent {
+            setAccessibilityLabel("\(device.name), battery \(batteryPercent) percent")
+        } else {
+            setAccessibilityLabel("\(device.name), reading battery level")
+        }
     }
 
     @available(*, unavailable)

@@ -76,7 +76,16 @@ struct DeviceStatus: Codable, Equatable {
     let name: String
     let kind: DeviceKind
     let serialNumber: String
-    let batteryPercent: Int
+    let batteryPercent: Int?
+}
+
+struct CachedDeviceStatus: Equatable {
+    let status: DeviceStatus
+    let batteryReadAt: Date
+
+    func hasFreshBattery(at date: Date, maximumAge: TimeInterval) -> Bool {
+        date.timeIntervalSince(batteryReadAt) < maximumAge
+    }
 }
 
 
@@ -125,29 +134,19 @@ enum RazerCommands {
 }
 
 enum RazerProducts {
-    struct Product: Equatable {
-        let name: String
-        let kind: DeviceKind
-    }
-
-    /// The receiver reports product IDs but not HID device categories, so the
-    /// category belongs in this small, extendable catalog. Unknown products
-    /// continue to work and simply use a generic peripheral icon.
-    private static let catalog: [UInt16: Product] = [
-        0x00B7: Product(name: "Razer DeathAdder V3 Pro Wireless", kind: .mouse),
-        0x0290: Product(name: "Razer DeathStalker V2 Pro Wireless", kind: .keyboard),
-    ]
+    typealias Product = DeviceCatalog.Product
 
     static func product(for productID: UInt16) -> Product {
-        let product = catalog[productID] ?? Product(
-            name: String(format: "Razer Device (1532:%04X)", productID),
-            kind: .unknown
+        if let product = DeviceCatalog.bundled.product(for: productID) { return product }
+        return Product(
+            vendorID: "1532", productID: String(format: "%04X", productID),
+            name: "Razer Device (1532:\(String(format: "%04X", productID)))",
+            kind: .unknown, batteryProtocol: nil, verified: false
         )
-        return Product(name: displayName(from: product.name), kind: product.kind)
     }
 
     static func name(for productID: UInt16) -> String {
-        product(for: productID).name
+        displayName(from: product(for: productID).name)
     }
 
     /// Keep the model name intact and apply one rule to every current and

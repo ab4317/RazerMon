@@ -1,0 +1,347 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "name": "OpenRazer",
+    "url": "https://github.com/openrazer/openrazer",
+    "revision": "6820f9da169d354bc7e6e93a0aa8683a6bb75792",
+    "note": "Wireless product names and IDs are derived from OpenRazer. Battery protocol compatibility is inferred for wireless endpoints and is not guaranteed unless verified is true."
+  },
+  "products": [
+    {
+      "vendorID": "1532",
+      "productID": "025C",
+      "name": "Razer BlackWidow V3 Pro (Wireless)",
+      "kind": "keyboard",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "0271",
+      "name": "Razer BlackWidow V3 Mini HyperSpeed (Wireless)",
+      "kind": "keyboard",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "0290",
+      "name": "Razer DeathStalker V2 Pro (Wireless)",
+      "kind": "keyboard",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": true
+    },
+    {
+      "vendorID": "1532",
+      "productID": "0296",
+      "name": "Razer DeathStalker V2 Pro TKL (Wireless)",
+      "kind": "keyboard",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "02BA",
+      "name": "Razer BlackWidow V4 Mini HyperSpeed (Wireless)",
+      "kind": "keyboard",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "02D5",
+      "name": "Razer BlackWidow V4 Tenkeyless HyperSpeed (Wireless)",
+      "kind": "keyboard",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "0025",
+      "name": "Razer Mamba 2012 (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "003F",
+      "name": "Razer Naga Epic Chroma (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "0045",
+      "name": "Razer Mamba (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "005A",
+      "name": "Razer Lancehead (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "0062",
+      "name": "Razer Atheris (Receiver)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "006F",
+      "name": "Razer Lancehead Wireless (Receiver)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "0072",
+      "name": "Razer Mamba Wireless (Receiver)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "0077",
+      "name": "Razer Pro Click (Receiver)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "007B",
+      "name": "Razer Viper Ultimate (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "007D",
+      "name": "Razer DeathAdder V2 Pro (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "0083",
+      "name": "Razer Basilisk X HyperSpeed",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "0088",
+      "name": "Razer Basilisk Ultimate (Receiver)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "0090",
+      "name": "Razer Naga Pro (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "0094",
+      "name": "Razer Orochi V2 (Receiver)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": true
+    },
+    {
+      "vendorID": "1532",
+      "productID": "0095",
+      "name": "Razer Orochi V2 (Bluetooth)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "009A",
+      "name": "Razer Pro Click Mini (Receiver)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "009C",
+      "name": "Razer DeathAdder V2 X HyperSpeed",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "009F",
+      "name": "Razer Viper Mini Signature Edition (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00A6",
+      "name": "Razer Viper V2 Pro (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00A8",
+      "name": "Razer Naga V2 Pro (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00AB",
+      "name": "Razer Basilisk V3 Pro (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00B0",
+      "name": "Razer Cobra Pro (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00B3",
+      "name": "Razer HyperPolling Wireless Dongle",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00B4",
+      "name": "Razer Naga V2 HyperSpeed (Receiver)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00B7",
+      "name": "Razer DeathAdder V3 Pro (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": true
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00B8",
+      "name": "Razer Viper V3 HyperSpeed",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00B9",
+      "name": "Razer Basilisk V3 X HyperSpeed",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00BF",
+      "name": "Razer DeathAdder V4 Pro (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00C1",
+      "name": "Razer Viper V3 Pro (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00C3",
+      "name": "Razer DeathAdder V3 Pro (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00C5",
+      "name": "Razer DeathAdder V3 HyperSpeed (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00C8",
+      "name": "Razer Pro Click V2 Vertical Edition (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00CD",
+      "name": "Razer Basilisk V3 Pro 35K (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00D1",
+      "name": "Razer Pro Click V2 (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00D4",
+      "name": "Razer Basilisk Mobile (Receiver)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    },
+    {
+      "vendorID": "1532",
+      "productID": "00D7",
+      "name": "Razer Basilisk V3 Pro 35K Phantom Green Edition (Wireless)",
+      "kind": "mouse",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false
+    }
+  ]
+}
