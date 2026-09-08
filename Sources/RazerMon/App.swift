@@ -43,6 +43,7 @@ final class RazerMonApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
         NSApp.applicationIconImage = RazerIcon.appImage
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         statusItem.button?.image = RazerIcon.makeStatusItemImage()
+        statusItem.button?.imageScaling = .scaleProportionallyDown
         statusItem.button?.toolTip = "RazerMon"
         // Device rows have no click action, but they are live/available data.
         // Disable AppKit's automatic action-based graying and control each row explicitly.

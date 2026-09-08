@@ -2,9 +2,23 @@
 
 RazerMon is a native, read-only macOS menu bar battery monitor for compatible wireless Razer mice and keyboards. It shows battery percentages for supported HyperSpeed, USB receiver, and Bluetooth device endpoints without requiring Razer Synapse.
 
-Current version: **0.3.0**
+Current version: **0.3.1**
 
-![RazerMon showing three wireless devices and their battery levels](docs/assets/razermon-menu.png)
+## Install with Homebrew
+
+The recommended installation method is Homebrew on an Apple silicon Mac:
+
+```sh
+brew install --cask ab4317/tap/razermon
+```
+
+Homebrew installs `RazerMon.app` directly into `/Applications`.
+
+You can also download `RazerMon-0.3.1-arm64.dmg` from the [latest release](https://github.com/ab4317/RazerMon/releases/latest), open it, and drag RazerMon into Applications.
+
+<p align="center">
+  <img src="docs/assets/razermon-menu.png" width="520" alt="RazerMon showing three wireless devices and their battery levels">
+</p>
 
 This is an independent, unofficial open-source project. It is not affiliated with or endorsed by Razer Inc. Razer and related product names are trademarks of their respective owners.
 
@@ -22,17 +36,18 @@ RazerMon only sends device identity, paired-product, and battery-level queries. 
 - Uses event-driven device monitoring and cached battery readings to minimize CPU use and power consumption
 - Refreshes device topology immediately when the menu opens
 - Pauses transient checks during system sleep and synchronizes once after wake
-- Runs natively on Apple silicon and Intel Macs
+- Ships as a native Apple silicon app
 - Localized in English, Simplified Chinese, Traditional Chinese, Japanese, Korean, German, French, Spanish, Brazilian Portuguese, Italian, and Russian
 - Requires no kernel extension and makes no device configuration changes
 
 ## Requirements
 
 - macOS 13 or later
+- Apple silicon Mac for the prebuilt DMG and Homebrew installation
 - Xcode with Swift 5.9 or later when building from source
 - Input Monitoring permission
 
-## Build and Install from Source
+## Build from Source
 
 Clone this repository and open the project in Xcode:
 

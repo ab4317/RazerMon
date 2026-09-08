@@ -13,8 +13,34 @@ enum RazerIcon {
 
     static func makeStatusItemImage(size: CGFloat = 18) -> NSImage {
         guard let url = Bundle.main.url(forResource: "StatusIcon", withExtension: "png"),
-              let image = NSImage(contentsOf: url) else { return appImage }
-        image.size = NSSize(width: size, height: size)
+              let source = NSImage(contentsOf: url),
+              let bitmap = NSBitmapImageRep(
+                bitmapDataPlanes: nil,
+                pixelsWide: Int(size * 2),
+                pixelsHigh: Int(size * 2),
+                bitsPerSample: 8,
+                samplesPerPixel: 4,
+                hasAlpha: true,
+                isPlanar: false,
+                colorSpaceName: .deviceRGB,
+                bytesPerRow: 0,
+                bitsPerPixel: 0
+              ),
+              let context = NSGraphicsContext(bitmapImageRep: bitmap) else { return appImage }
+
+        // Decode and rasterize the status icon before assigning it to the
+        // status item. This avoids AppKit briefly displaying the lazy-loaded
+        // source at its intrinsic size while the app is launching.
+        NSGraphicsContext.saveGraphicsState()
+        NSGraphicsContext.current = context
+        NSColor.clear.setFill()
+        NSRect(x: 0, y: 0, width: size * 2, height: size * 2).fill()
+        source.draw(in: NSRect(x: 0, y: 0, width: size * 2, height: size * 2))
+        NSGraphicsContext.restoreGraphicsState()
+
+        bitmap.size = NSSize(width: size, height: size)
+        let image = NSImage(size: bitmap.size)
+        image.addRepresentation(bitmap)
         image.isTemplate = true
         return image
     }
