@@ -1,6 +1,6 @@
-# RazerMon
+# RazerMon — Razer Battery Monitor for macOS
 
-RazerMon is a read-only macOS menu bar utility that displays battery levels for compatible wireless Razer keyboards and mice.
+RazerMon is a native, read-only macOS menu bar battery monitor for compatible wireless Razer mice and keyboards. It shows battery percentages for supported HyperSpeed, USB receiver, and Bluetooth device endpoints without requiring Razer Synapse.
 
 Current version: **0.2.0**
 
@@ -10,9 +10,20 @@ This is an independent, unofficial open-source project. It is not affiliated wit
 
 RazerMon supports a broad and growing range of battery-powered Razer keyboards and mice using wireless, HyperSpeed, receiver, or Bluetooth connections. Wired-only hardware is intentionally excluded because it has no battery level to monitor. Device support is data-driven, so compatible hardware can work without model-specific Swift code.
 
-See [Supported Devices](docs/SUPPORTED_DEVICES.md) for the current keyboard and mouse catalog. Hardware reports and pull requests are welcome.
+See the [RazerMon supported wireless devices list](docs/SUPPORTED_DEVICES.md) for the current keyboard and mouse catalog. For setup and compatibility questions, see the [Razer battery monitoring FAQ for macOS](docs/FAQ.md). Hardware reports and pull requests are welcome.
 
 RazerMon only sends device identity, paired-product, and battery-level queries. It does not modify lighting, DPI, pairing, profiles, or key bindings.
+
+## Features
+
+- Shows Razer mouse and keyboard battery percentages in the macOS menu bar
+- Detects compatible wireless devices when they connect or disconnect
+- Supports compatible HyperSpeed receivers, dedicated USB receivers, and Bluetooth endpoints
+- Uses event-driven device monitoring and cached battery readings to minimize CPU use and power consumption
+- Refreshes device topology immediately when the menu opens
+- Pauses transient checks during system sleep and synchronizes once after wake
+- Runs natively on Apple silicon and Intel Macs
+- Requires no kernel extension and makes no device configuration changes
 
 ## Requirements
 
@@ -63,6 +74,13 @@ Protocol behavior remains implemented in type-safe Swift adapters. Wireless devi
 ## Device Catalog Source
 
 Device names and USB IDs are derived from the [OpenRazer device support list](https://github.com/openrazer/openrazer) at the revision recorded in the catalog. OpenRazer support indicates that a device is known to its Linux drivers; it does not by itself establish compatibility with RazerMon's macOS battery protocol.
+
+## Related Documentation
+
+- [Supported wireless Razer keyboards and mice](docs/SUPPORTED_DEVICES.md)
+- [Razer battery monitoring FAQ for macOS](docs/FAQ.md)
+- [Latest RazerMon release](https://github.com/ab4317/RazerMon/releases/latest)
+- [Report a device compatibility issue](https://github.com/ab4317/RazerMon/issues/new)
 
 ## License
 
