@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RazerMon — Razer Battery Monitor for macOS</title>
+  <meta name="description" content="RazerMon is a free, open-source macOS menu bar app that shows battery levels for compatible wireless Razer mice and keyboards without Razer Synapse.">
+  <meta name="keywords" content="Razer battery monitor Mac, Razer mouse battery macOS, Razer keyboard battery Mac, Razer Synapse alternative macOS">
+  <meta name="author" content="ab4317">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://ab4317.github.io/RazerMon/">
+  <link rel="stylesheet" href="style.css">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="RazerMon — Razer Battery Monitor for macOS">
+  <meta property="og:description" content="Check compatible wireless Razer mouse and keyboard battery levels from the macOS menu bar.">
+  <meta property="og:url" content="https://ab4317.github.io/RazerMon/">
+  <meta property="og:image" content="https://ab4317.github.io/RazerMon/assets/razermon-menu.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "RazerMon",
+        "operatingSystem": "macOS 13 or later",
+        "applicationCategory": "UtilitiesApplication",
+        "softwareVersion": "0.3.1",
+        "downloadUrl": "https://github.com/ab4317/RazerMon/releases/latest",
+        "codeRepository": "https://github.com/ab4317/RazerMon",
+        "license": "https://opensource.org/license/mit",
+        "description": "A native, read-only macOS menu bar battery monitor for compatible wireless Razer mice and keyboards.",
+        "author": { "@type": "Person", "name": "ab4317", "url": "https://github.com/ab4317" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How can I check a Razer mouse battery level on a Mac?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Install RazerMon, launch it, and grant Input Monitoring permission. The battery percentage appears in the macOS menu bar." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does RazerMon require Razer Synapse?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. RazerMon uses macOS HID APIs and does not require Razer Synapse, a kernel extension, or a background driver." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does RazerMon record keyboard or mouse activity?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. RazerMon only sends read-only identity, paired-product, and battery-level queries." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header wrap">
+    <a class="wordmark" href="./">RazerMon</a>
+    <nav aria-label="Main navigation">
+      <a href="#features">Features</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://github.com/ab4317/RazerMon">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero wrap">
+      <p class="kicker">Razer battery monitor for macOS</p>
+      <h1>Battery levels.<br>Nothing else.</h1>
+      <p class="lead">RazerMon shows the battery percentage of compatible wireless Razer mice and keyboards in your Mac menu bar—without Razer Synapse.</p>
+      <div class="actions">
+        <a class="button primary" href="https://github.com/ab4317/RazerMon/releases/latest">Download for macOS</a>
+        <a class="button secondary" href="https://github.com/ab4317/RazerMon">View source</a>
+      </div>
+      <p class="requirements">Free and open source · macOS 13+ · Apple silicon</p>
+    </section>
+
+    <section class="product wrap" aria-label="RazerMon screenshot">
+      <img src="assets/razermon-menu.png" alt="RazerMon menu bar app showing battery percentages for three connected wireless Razer devices" width="824" height="530">
+    </section>
+
+    <section class="section wrap" id="features">
+      <p class="section-label">Features</p>
+      <div class="fabg-grid">
+        <article>
+          <span>Feature</span>
+          <h2>Battery status in your menu bar.</h2>
+          <p>RazerMon reads battery levels from compatible wireless Razer mice and keyboards connected through HyperSpeed, USB receivers, or Bluetooth.</p>
+        </article>
+        <article>
+          <span>Advantage</span>
+          <h2>No Synapse. No configuration.</h2>
+          <p>A small native macOS app handles read-only battery queries without changing DPI, lighting, profiles, macros, pairing, or key bindings.</p>
+        </article>
+        <article>
+          <span>Benefit</span>
+          <h2>Know when to charge.</h2>
+          <p>Check every compatible device in one place and avoid discovering a low battery in the middle of work or play.</p>
+        </article>
+        <article class="grab">
+          <span>Grab</span>
+          <h2>See the charge.<br>Skip the surprise.</h2>
+          <a class="button primary" href="https://github.com/ab4317/RazerMon/releases/latest">Get RazerMon</a>
+        </article>
+      </div>
+      <a class="plain-link" href="https://github.com/ab4317/RazerMon/blob/main/docs/SUPPORTED_DEVICES.md">View supported devices ↗</a>
+    </section>
+
+    <section class="install-section">
+      <div class="wrap install-inner">
+        <div>
+          <p class="section-label">Install</p>
+          <h2>One command.</h2>
+        </div>
+        <div class="command" role="group" aria-label="Homebrew installation command">
+          <code>brew install --cask ab4317/tap/razermon</code>
+          <button type="button" data-copy aria-label="Copy installation command">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section wrap faq" id="faq">
+      <p class="section-label">Search and support</p>
+      <h2>FAQ</h2>
+      <details open>
+        <summary>How do I check a Razer mouse battery level on a Mac?</summary>
+        <p>Install RazerMon in Applications, launch it, and grant Input Monitoring permission. Compatible device battery levels then appear in the macOS menu bar.</p>
+      </details>
+      <details>
+        <summary>Does RazerMon require Razer Synapse?</summary>
+        <p>No. It communicates through macOS HID APIs and requires no Synapse installation, kernel extension, or additional driver.</p>
+      </details>
+      <details>
+        <summary>Why is Input Monitoring permission required?</summary>
+        <p>macOS protects access to keyboard and mouse HID devices. The permission lets RazerMon send read-only battery queries. It does not record keystrokes or pointer activity.</p>
+      </details>
+      <details>
+        <summary>Will it change my device settings?</summary>
+        <p>No. RazerMon does not modify lighting, DPI, polling rate, pairing, profiles, macros, or key bindings.</p>
+      </details>
+      <details>
+        <summary>What if my device is not detected?</summary>
+        <p>Check the supported device list or open a compatibility issue with the product name, connection mode, and USB product ID. Do not include a serial number.</p>
+      </details>
+      <a class="plain-link" href="https://github.com/ab4317/RazerMon/blob/main/docs/FAQ.md">Read the complete FAQ ↗</a>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <span>RazerMon is an independent, unofficial open-source project.</span>
+    <span>© 2026 ab4317 · MIT License</span>
+  </footer>
+
+  <script>
+    const copyButton = document.querySelector('[data-copy]');
+    copyButton.addEventListener('click', async () => {
+      await navigator.clipboard.writeText('brew install --cask ab4317/tap/razermon');
+      copyButton.textContent = 'Copied';
+      window.setTimeout(() => copyButton.textContent = 'Copy', 1400);
+    });
+  </script>
+</body>
+</html>
