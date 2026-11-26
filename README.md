@@ -1,8 +1,8 @@
 # RazerMon — Razer Battery Monitor for macOS
 
-RazerMon is a native, read-only macOS menu bar battery monitor for compatible wireless Razer mice and keyboards. It shows battery percentages for supported HyperSpeed, USB receiver, and Bluetooth device endpoints without requiring Razer Synapse.
+RazerMon is a native, read-only macOS menu bar battery monitor for compatible wireless Razer mice and keyboards. It shows battery percentages for supported devices connected through a HyperSpeed or other 2.4 GHz USB receiver without requiring Razer Synapse.
 
-Current version: **0.3.1**
+Current version: **0.3.2**
 
 ## Install with Homebrew
 
@@ -14,7 +14,7 @@ brew install --cask ab4317/tap/razermon
 
 Homebrew installs `RazerMon.app` directly into `/Applications`.
 
-You can also download `RazerMon-0.3.1-arm64.dmg` from the [latest release](https://github.com/ab4317/RazerMon/releases/latest), open it, and drag RazerMon into Applications.
+You can also download `RazerMon-0.3.2-arm64.dmg` from the [latest release](https://github.com/ab4317/RazerMon/releases/latest), open it, and drag RazerMon into Applications.
 
 <p align="center">
   <img src="docs/assets/razermon-menu.png" width="520" alt="RazerMon showing three wireless devices and their battery levels">
@@ -22,7 +22,7 @@ You can also download `RazerMon-0.3.1-arm64.dmg` from the [latest release](https
 
 This is an independent, unofficial open-source project. It is not affiliated with or endorsed by Razer Inc. Razer and related product names are trademarks of their respective owners.
 
-RazerMon supports a broad and growing range of battery-powered Razer keyboards and mice using wireless, HyperSpeed, receiver, or Bluetooth connections. Wired-only hardware is intentionally excluded because it has no battery level to monitor. Device support is data-driven, so compatible hardware can work without model-specific Swift code.
+RazerMon supports a broad and growing range of battery-powered Razer keyboards and mice connected through their 2.4 GHz USB receiver (HyperSpeed or dedicated wireless dongle). Only receiver connections are supported. Bluetooth connections are not supported, because macOS does not expose the 90-byte HID feature report the battery query needs over Bluetooth (verified on the Orochi V2), and neither are cable connections, which report a wired USB product ID that is not in the catalog. Wired-only hardware is intentionally excluded because it has no battery level to monitor. Device support is data-driven, so compatible hardware can work without model-specific Swift code.
 
 See the [RazerMon supported wireless devices list](docs/SUPPORTED_DEVICES.md) for the current keyboard and mouse catalog. For setup and compatibility questions, see the [Razer battery monitoring FAQ for macOS](docs/FAQ.md). Hardware reports and pull requests are welcome.
 
@@ -32,7 +32,9 @@ RazerMon only sends device identity, paired-product, and battery-level queries. 
 
 - Shows Razer mouse and keyboard battery percentages in the macOS menu bar
 - Detects compatible wireless devices when they connect or disconnect
-- Supports compatible HyperSpeed receivers, dedicated USB receivers, and Bluetooth endpoints
+- Supports compatible HyperSpeed receivers and dedicated 2.4 GHz USB receivers
+- Keeps a connected device in the menu as **Unavailable** when its battery cannot be read
+- Copies a plain-text diagnostics report for device compatibility issues
 - Uses event-driven device monitoring and cached battery readings to minimize CPU use and power consumption
 - Refreshes device topology immediately when the menu opens
 - Pauses transient checks during system sleep and synchronizes once after wake
@@ -46,6 +48,7 @@ RazerMon only sends device identity, paired-product, and battery-level queries. 
 - Apple silicon Mac for the prebuilt DMG and Homebrew installation
 - Xcode with Swift 5.9 or later when building from source
 - Input Monitoring permission
+- A 2.4 GHz USB receiver connection; Bluetooth and cable connections are not supported
 
 ## Build from Source
 
@@ -66,24 +69,49 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
   -configuration Release \
   -derivedDataPath build \
   CODE_SIGNING_ALLOWED=NO build
+codesign --force --sign - \
+  --entitlements Resources/RazerMon.entitlements \
+  --options runtime \
+  build/Build/Products/Release/RazerMon.app
 ```
 
-The resulting application is located at `build/Build/Products/Release/RazerMon.app`. Install and launch it with:
+The `codesign` step applies the App Sandbox and USB entitlements, which are not embedded when signing is disabled during the build. The resulting application is located at `build/Build/Products/Release/RazerMon.app`. Install and launch it with:
 
 ```sh
 ditto build/Build/Products/Release/RazerMon.app /Applications/RazerMon.app
 open /Applications/RazerMon.app
 ```
 
-On first launch, follow the in-app instructions to open **System Settings > Privacy & Security > Input Monitoring**, add RazerMon, and enable access. Install the application in `/Applications` before granting permission so its path and permission identity remain stable.
+On first launch, follow the in-app instructions to open **System Settings > Privacy & Security > Input Monitoring**, add RazerMon, and enable access. Install the application in `/Applications` before granting permission so its path and permission identity remain stable. RazerMon is ad-hoc signed rather than signed with a developer certificate, so each update has a new code signature and macOS treats it as a new app: after installing an update, enable RazerMon in Input Monitoring again (remove the old entry first if it no longer works).
 
-RazerMon appears only in the macOS menu bar and does not display a Dock icon. Open its menu to view devices and battery levels, refresh immediately, manage launch at login, or quit. Device discovery runs immediately when the menu opens and reacts to system device events. While the menu remains open, a 15-second fallback check covers devices paired behind receivers that do not emit a macOS attach or removal event. Battery values are cached independently for five minutes: new devices are read immediately, unchanged devices reuse fresh values, and removed devices are discarded without another battery query. The menu is rebuilt only when displayed data changes, and the low-frequency background refresh runs every 15 minutes with power-efficient timer tolerance. RazerMon pauses transient menu checks before system sleep and performs one device synchronization after wake; it does not create a power assertion or prevent display, idle, or lid-close sleep.
+RazerMon appears only in the macOS menu bar and does not display a Dock icon. Open its menu to view devices and battery levels, refresh immediately, manage launch at login, copy diagnostics, or quit. Device discovery runs immediately when the menu opens and reacts to system device events. While the menu remains open, a 15-second fallback check covers devices paired behind receivers that do not emit a macOS attach or removal event. Battery values are cached independently for five minutes: new devices are read immediately, unchanged devices reuse fresh values, and removed devices are discarded without another battery query. The menu is rebuilt only when displayed data changes, and the low-frequency background refresh runs every 15 minutes with power-efficient timer tolerance. RazerMon pauses transient menu checks before system sleep and performs one device synchronization after wake; it does not create a power assertion or prevent display, idle, or lid-close sleep.
 
-The application uses App Sandbox with USB device access. After installing it in `/Applications`, use **Launch at Login** in the menu to control whether it starts when you sign in.
+After installing it in `/Applications`, use **Launch at Login** in the menu to control whether it starts when you sign in.
+
+## Troubleshooting
+
+When a supported receiver is connected but its battery cannot be read, the device stays in the menu as **Unavailable** instead of disappearing. Check that the device is switched on and in 2.4 GHz mode. If it stays unavailable, its receiver may use a protocol variant RazerMon does not support yet. A device connected only over Bluetooth or cable does not appear at all.
+
+To report such a device, choose **Copy Diagnostics** from the menu and paste the report into a [GitHub issue](https://github.com/ab4317/RazerMon/issues/new). The report lists the app and macOS versions, whether Input Monitoring is granted, the HID interfaces macOS reports for Razer devices, and the raw replies to the read-only identity, paired-product, and battery queries. Serial numbers are omitted. The report is only placed on the clipboard; RazerMon does not send it anywhere.
+
+## Privacy and Permissions
+
+RazerMon needs Input Monitoring permission only because macOS requires it before an app can open keyboard and mouse HID devices, which is where Razer receivers accept battery queries. RazerMon does not read keystrokes or pointer movement.
+
+The release app runs in the App Sandbox with exactly two entitlements:
+
+- `com.apple.security.app-sandbox`
+- `com.apple.security.device.usb`
+
+It has no network entitlement, so it cannot make network connections, and no file-access entitlement, so it cannot read or write your files outside its own sandbox container. You can check the entitlements of an installed copy yourself:
+
+```sh
+codesign -d --entitlements - /Applications/RazerMon.app
+```
 
 ## Protocol Validation
 
-Every response must have the expected 90-byte length and pass XOR checksum, transaction ID, command class, and command ID validation. Serial numbers are deduplicated so cached responses from other transactions are not reported as additional devices.
+Every response must have the expected 90-byte length and pass XOR checksum, transaction ID, command class, and command ID validation, and must report a successful status. Busy, failed, and timed-out replies are retried a limited number of times; a reply that the command is not supported is not retried. Serial numbers are deduplicated so cached responses from other transactions are not reported as additional devices.
 
 Protocol behavior remains implemented in type-safe Swift adapters. Wireless device names, product IDs, device kinds, and candidate protocol mappings are stored in the bundled read-only [`Resources/DeviceCatalog.json`](Resources/DeviceCatalog.json). Wired-only devices are not included. This keeps hardware additions reviewable without allowing configuration data to define arbitrary HID commands.
 

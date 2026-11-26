@@ -6,7 +6,7 @@ RazerMon displays the battery percentage of compatible wireless Razer mice in th
 
 ## Can I check a wireless Razer keyboard battery level on macOS?
 
-Yes. RazerMon supports compatible battery-powered Razer keyboards connected through HyperSpeed or supported wireless receiver endpoints. See the [supported wireless Razer devices list](SUPPORTED_DEVICES.md) for the current catalog.
+Yes. RazerMon supports compatible battery-powered Razer keyboards connected through a HyperSpeed or other supported 2.4 GHz USB receiver. See the [supported wireless Razer devices list](SUPPORTED_DEVICES.md) for the current catalog.
 
 ## Does RazerMon require Razer Synapse?
 
@@ -18,11 +18,19 @@ RazerMon supports compatible HyperSpeed and dedicated USB receiver endpoints. It
 
 ## Does it support Bluetooth Razer devices?
 
-Bluetooth endpoints present in the device catalog are recognized, but battery reporting depends on the device firmware and how macOS exposes that connection. Some models may only provide the required protocol through their USB receiver.
+No. Over Bluetooth, macOS does not expose the 90-byte HID feature report that the Razer battery query uses, so the battery level cannot be read. Switch the device to 2.4 GHz mode and connect it through its USB receiver. Cable connections are not supported either.
 
 ## Why does RazerMon need Input Monitoring permission?
 
-macOS protects access to keyboard and mouse HID devices. Input Monitoring permission allows RazerMon to send read-only identity and battery queries to compatible hardware. RazerMon does not record keystrokes or pointer activity.
+macOS protects access to keyboard and mouse HID devices and requires Input Monitoring permission before an app can open them. RazerMon uses this access only to send read-only identity and battery queries to compatible hardware. It does not record keystrokes or pointer activity.
+
+## Why do I have to grant Input Monitoring again after an update?
+
+RazerMon is ad-hoc signed rather than signed with a developer certificate, so each release has a new code signature and macOS treats the update as a different app. After updating, enable RazerMon in **System Settings > Privacy & Security > Input Monitoring** again. If the existing entry no longer works, remove it and add RazerMon again.
+
+## Does RazerMon access the network or my files?
+
+No. The release app runs in the App Sandbox with only the `com.apple.security.app-sandbox` and `com.apple.security.device.usb` entitlements. It has no network or file-access entitlement. You can verify this with `codesign -d --entitlements - /Applications/RazerMon.app`.
 
 ## Does RazerMon change mouse or keyboard settings?
 
@@ -34,8 +42,12 @@ RazerMon uses event-driven connection monitoring, per-device battery caching, to
 
 ## Which macOS versions are supported?
 
-RazerMon supports macOS 13 and later on Apple silicon and Intel Macs.
+RazerMon supports macOS 13 and later. The prebuilt DMG and Homebrew installation are for Apple silicon Macs; on an Intel Mac, build it from source.
+
+## What does "Unavailable" mean?
+
+The device's receiver is connected, but its battery level could not be read. Check that the device is switched on and in 2.4 GHz mode. If it stays unavailable, report it as described below.
 
 ## What should I do if my device is missing?
 
-Open a [GitHub device compatibility issue](https://github.com/ab4317/RazerMon/issues/new) with the product name, connection mode, and USB product ID. Do not include the device serial number or other personally identifying information.
+Open a [GitHub device compatibility issue](https://github.com/ab4317/RazerMon/issues/new) with the product name, connection mode, and USB product ID. If the device appears as unavailable, choose **Copy Diagnostics** from the RazerMon menu and paste the report into the issue; it omits serial numbers. Do not include the device serial number or other personally identifying information.

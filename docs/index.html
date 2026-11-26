@@ -28,7 +28,7 @@
         "name": "RazerMon",
         "operatingSystem": "macOS 13 or later",
         "applicationCategory": "UtilitiesApplication",
-        "softwareVersion": "0.3.1",
+        "softwareVersion": "0.3.2",
         "inLanguage": "en",
         "downloadUrl": "https://github.com/ab4317/RazerMon/releases/latest",
         "codeRepository": "https://github.com/ab4317/RazerMon",
@@ -54,6 +54,11 @@
             "@type": "Question",
             "name": "Does RazerMon record keyboard or mouse activity?",
             "acceptedAnswer": { "@type": "Answer", "text": "No. RazerMon only sends read-only identity, paired-product, and battery-level queries." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does RazerMon support Bluetooth Razer devices?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. RazerMon reads battery levels only through a 2.4 GHz USB receiver. Over Bluetooth, macOS does not expose the HID report the battery query needs." }
           }
         ]
       }
@@ -80,7 +85,7 @@
         <a class="button primary" href="https://github.com/ab4317/RazerMon/releases/latest">Download for macOS</a>
         <a class="button secondary" href="https://github.com/ab4317/RazerMon">View source</a>
       </div>
-      <p class="requirements">Free and open source · macOS 13+ · Apple silicon</p>
+      <p class="requirements">Free and open source · macOS 13+ · Apple silicon · 2.4 GHz USB receiver</p>
     </section>
 
     <section class="product wrap" aria-label="RazerMon screenshot">
@@ -92,7 +97,7 @@
       <div class="feature-grid">
         <article>
           <h2>Battery status in the menu bar</h2>
-          <p>See battery levels for compatible wireless Razer mice and keyboards connected through HyperSpeed, USB receivers, or Bluetooth.</p>
+          <p>See battery levels for compatible wireless Razer mice and keyboards connected through a HyperSpeed or other 2.4 GHz USB receiver. Bluetooth and cable connections are not supported.</p>
         </article>
         <article>
           <h2>No Synapse or device changes</h2>
@@ -132,7 +137,15 @@
       </details>
       <details>
         <summary>Why is Input Monitoring permission required?</summary>
-        <p>macOS protects access to keyboard and mouse HID devices. The permission lets RazerMon send read-only battery queries. It does not record keystrokes or pointer activity.</p>
+        <p>macOS requires it before an app can open keyboard and mouse HID devices. RazerMon uses that access only to send read-only battery queries. It does not record keystrokes or pointer activity. Because the app is ad-hoc signed, macOS asks for the permission again after each update.</p>
+      </details>
+      <details>
+        <summary>Does RazerMon access the network or my files?</summary>
+        <p>No. The app runs in the App Sandbox with only the App Sandbox and USB device entitlements, so it has no network or file access. The <a href="https://github.com/ab4317/RazerMon#privacy-and-permissions">README</a> shows the <code>codesign</code> command to verify this.</p>
+      </details>
+      <details>
+        <summary>Does it work over Bluetooth?</summary>
+        <p>No. Over Bluetooth, macOS does not expose the HID report the battery query needs. Connect the device through its 2.4 GHz USB receiver instead.</p>
       </details>
       <details>
         <summary>Will it change my device settings?</summary>
@@ -140,7 +153,7 @@
       </details>
       <details>
         <summary>What if my device is not detected?</summary>
-        <p>Check the supported device list or open a compatibility issue with the product name, connection mode, and USB product ID. Do not include a serial number.</p>
+        <p>Check the supported device list and make sure the device uses its USB receiver. If it is missing or shows as Unavailable, choose Copy Diagnostics from the RazerMon menu and paste the report into a compatibility issue together with the product name and connection mode. The report omits serial numbers.</p>
       </details>
       <a class="plain-link" href="https://github.com/ab4317/RazerMon/blob/main/docs/FAQ.md">Read the complete FAQ ↗</a>
     </section>
