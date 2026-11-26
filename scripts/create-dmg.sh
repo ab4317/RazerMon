@@ -37,7 +37,23 @@ DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Developer}" \
     CODE_SIGNING_ALLOWED=NO \
     build
 
-codesign --force --deep --sign - "$APP_PATH"
+# Signing is disabled in xcodebuild above, so apply the same ad-hoc identity,
+# entitlements, and hardened runtime that the Xcode target configures
+# (CODE_SIGN_IDENTITY = "-", CODE_SIGN_ENTITLEMENTS, ENABLE_HARDENED_RUNTIME).
+# The bundle contains no nested code, so --deep is not needed.
+codesign --force --sign - \
+    --entitlements "$PROJECT_ROOT/Resources/RazerMon.entitlements" \
+    --options runtime \
+    "$APP_PATH"
+codesign --verify --strict --verbose=2 "$APP_PATH"
+SIGNED_ENTITLEMENTS="$WORK_DIR/signed-entitlements.plist"
+codesign -d --entitlements - --xml "$APP_PATH" > "$SIGNED_ENTITLEMENTS" 2>/dev/null
+for key in com.apple.security.app-sandbox com.apple.security.device.usb; do
+    if [[ "$(/usr/libexec/PlistBuddy -c "Print :$key" "$SIGNED_ENTITLEMENTS" 2>/dev/null)" != "true" ]]; then
+        echo "error: signed app is missing entitlement $key" >&2
+        exit 1
+    fi
+done
 ditto "$APP_PATH" "$STAGING_DIR/RazerMon.app"
 ln -s /Applications "$STAGING_DIR/Applications"
 mkdir -p "$STAGING_DIR/.background"
