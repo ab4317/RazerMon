@@ -351,6 +351,76 @@
         }
       }
     },
+    "accessibility.device_unavailable": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, battery level unavailable"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@，无法读取电量"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@，無法讀取電量"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@、バッテリー残量を取得できません"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, 배터리 잔량을 사용할 수 없음"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, Batteriestand nicht verfügbar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, niveau de batterie indisponible"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, nivel de batería no disponible"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, nível da bateria indisponível"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, livello batteria non disponibile"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, уровень заряда недоступен"
+          }
+        }
+      }
+    },
     "accessibility.keyboard": {
       "localizations": {
         "en": {
@@ -487,6 +557,146 @@
           "stringUnit": {
             "state": "translated",
             "value": "Мышь"
+          }
+        }
+      }
+    },
+    "diagnostics.copied.message": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A device report is on the clipboard. Paste it into your GitHub issue. It shows how macOS describes your Razer devices and how they answered; serial numbers are left out."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设备报告已复制到剪贴板。请将其粘贴到你的 GitHub 议题中。报告包含 macOS 对雷蛇设备的描述以及设备的响应，不包含序列号。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "裝置報告已拷貝到剪貼簿。請將其貼到你的 GitHub 議題中。報告包含 macOS 對 Razer 裝置的描述以及裝置的回應，不包含序號。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "デバイスレポートをクリップボードにコピーしました。GitHub の Issue に貼り付けてください。macOS が認識している Razer デバイスの情報とその応答が含まれます。シリアル番号は含まれません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기기 보고서가 클립보드에 복사되었습니다. GitHub 이슈에 붙여 넣으십시오. macOS가 인식한 Razer 기기 정보와 기기의 응답이 포함되며 일련 번호는 포함되지 않습니다."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Gerätebericht liegt in der Zwischenablage. Füge ihn in dein GitHub-Issue ein. Er zeigt, wie macOS deine Razer-Geräte beschreibt und wie sie geantwortet haben; Seriennummern sind nicht enthalten."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un rapport sur les appareils a été copié dans le presse-papiers. Collez-le dans votre ticket GitHub. Il indique comment macOS décrit vos appareils Razer et leurs réponses ; les numéros de série sont exclus."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se copió un informe de dispositivos al portapapeles. Pégalo en tu issue de GitHub. Muestra cómo describe macOS tus dispositivos Razer y cómo respondieron; no incluye números de serie."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um relatório dos dispositivos foi copiado para a área de transferência. Cole-o na sua issue do GitHub. Ele mostra como o macOS descreve seus dispositivos Razer e como eles responderam; números de série não são incluídos."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un report sui dispositivi è stato copiato negli appunti. Incollalo nella tua issue su GitHub. Mostra come macOS descrive i tuoi dispositivi Razer e come hanno risposto; i numeri di serie sono esclusi."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отчёт об устройствах скопирован в буфер обмена. Вставьте его в свой issue на GitHub. В нём указано, как macOS описывает ваши устройства Razer и что они ответили; серийные номера не включаются."
+          }
+        }
+      }
+    },
+    "diagnostics.copied.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnostics Copied"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "诊断信息已复制"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "診斷資訊已拷貝"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "診断情報をコピーしました"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "진단 정보가 복사됨"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnose kopiert"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnostics copiés"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnóstico copiado"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnóstico Copiado"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnostica copiata"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Диагностика скопирована"
           }
         }
       }
@@ -837,6 +1047,76 @@
           "stringUnit": {
             "state": "translated",
             "value": "Не удалось открыть диспетчер HID (%d)"
+          }
+        }
+      }
+    },
+    "error.protocol.command_failed": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The device reported status %lld"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设备返回状态 %lld"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "裝置回報狀態 %lld"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "デバイスがステータス %lld を返しました"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기기가 상태 %lld을(를) 보고함"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Gerät meldete Status %lld"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’appareil a signalé l’état %lld"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El dispositivo informó el estado %lld"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O dispositivo informou o status %lld"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il dispositivo ha segnalato lo stato %lld"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Устройство сообщило о статусе %lld"
           }
         }
       }
@@ -1257,6 +1537,216 @@
           "stringUnit": {
             "state": "translated",
             "value": "Не удалось изменить запуск при входе"
+          }
+        }
+      }
+    },
+    "menu.battery_unavailable": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unavailable"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不可用"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法使用"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取得できません"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "사용할 수 없음"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht verfügbar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indisponible"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No disponible"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indisponível"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non disponibile"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Недоступно"
+          }
+        }
+      }
+    },
+    "menu.battery_unavailable.help": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connected, but the battery level could not be read. Choose Copy Diagnostics and attach the report to a GitHub issue."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已连接，但无法读取电量。请选择“复制诊断信息”，并将报告附加到 GitHub 议题中。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已連接，但無法讀取電量。請選擇「拷貝診斷資訊」，並將報告附加到 GitHub 議題中。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "接続されていますが、バッテリー残量を読み取れませんでした。「診断情報をコピー」を選択し、レポートを GitHub の Issue に添付してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "연결되어 있지만 배터리 잔량을 읽을 수 없습니다. 진단 정보 복사를 선택하고 보고서를 GitHub 이슈에 첨부하십시오."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbunden, aber der Batteriestand konnte nicht gelesen werden. Wähle „Diagnose kopieren“ und hänge den Bericht an ein GitHub-Issue an."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecté, mais le niveau de batterie n’a pas pu être lu. Choisissez « Copier les diagnostics » et joignez le rapport à un ticket GitHub."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conectado, pero no se pudo leer el nivel de batería. Elige «Copiar diagnóstico» y adjunta el informe a un issue de GitHub."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conectado, mas não foi possível ler o nível da bateria. Escolha Copiar Diagnóstico e anexe o relatório a uma issue do GitHub."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connesso, ma non è stato possibile leggere il livello della batteria. Scegli “Copia diagnostica” e allega il report a una issue su GitHub."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подключено, но не удалось прочитать уровень заряда. Выберите «Скопировать диагностику» и приложите отчёт к issue на GitHub."
+          }
+        }
+      }
+    },
+    "menu.copy_diagnostics": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy Diagnostics"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "复制诊断信息"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拷貝診斷資訊"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "診断情報をコピー"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "진단 정보 복사"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnose kopieren"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copier les diagnostics"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiar diagnóstico"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiar Diagnóstico"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copia diagnostica"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Скопировать диагностику"
           }
         }
       }

@@ -25,7 +25,9 @@ struct RazerReport: Equatable {
         self.bytes = bytes
     }
 
+    var status: UInt8 { bytes[0] }
     var transactionID: UInt8 { bytes[1] }
+    var dataSize: UInt8 { bytes[5] }
     var commandClass: UInt8 { bytes[6] }
     var commandID: UInt8 { bytes[7] }
 
@@ -40,10 +42,43 @@ struct RazerReport: Equatable {
     }
 }
 
+/// Status byte values used by the Razer report protocol (OpenRazer
+/// driver/razercommon.h, RAZER_CMD_*).
+enum RazerStatus {
+    static let busy: UInt8 = 0x01
+    static let successful: UInt8 = 0x02
+    static let failure: UInt8 = 0x03
+    static let timeout: UInt8 = 0x04
+    static let notSupported: UInt8 = 0x05
+}
+
+/// How a transport should treat a response that already matched its request.
+enum ResponseDisposition: Equatable {
+    case accept
+    case retry(UInt8)
+    case reject(UInt8)
+
+    /// Based on OpenRazer's razer_send_payload, with one deliberate
+    /// difference: OpenRazer accepts "busy" because some set commands report
+    /// it and still succeed, but every command here is a read, and a receiver
+    /// asked too early answers busy with all-zero arguments (observed on a
+    /// 1532:00B7 receiver). Accepting that would read as 0% battery or an empty
+    /// serial, so busy is retried. An unsupported command is not retried
+    /// because repeating it cannot change the answer.
+    init(status: UInt8) {
+        switch status {
+        case RazerStatus.successful: self = .accept
+        case RazerStatus.notSupported: self = .reject(status)
+        default: self = .retry(status)
+        }
+    }
+}
+
 enum ProtocolError: Error, CustomStringConvertible {
     case invalidLength(Int)
     case invalidChecksum
     case staleResponse
+    case commandFailed(UInt8)
     case malformedResponse(String)
 
     var description: String {
@@ -51,6 +86,7 @@ enum ProtocolError: Error, CustomStringConvertible {
         case .invalidLength(let length): return L10n.format("error.protocol.invalid_length", length)
         case .invalidChecksum: return L10n.text("error.protocol.invalid_checksum")
         case .staleResponse: return L10n.text("error.protocol.stale_response")
+        case .commandFailed(let status): return L10n.format("error.protocol.command_failed", Int(status))
         case .malformedResponse(let detail): return detail
         }
     }
@@ -72,11 +108,14 @@ enum DeviceKind: String, Codable, Equatable {
     case unknown
 }
 
-struct DeviceStatus: Codable, Equatable {
+struct DeviceStatus: Equatable {
     let name: String
     let kind: DeviceKind
     let serialNumber: String
     let batteryPercent: Int?
+    /// True when the device is connected but its battery could not be read.
+    /// The row stays visible instead of disappearing from the menu.
+    var batteryUnavailable = false
 }
 
 struct CachedDeviceStatus: Equatable {
@@ -92,8 +131,10 @@ struct CachedDeviceStatus: Equatable {
 enum RazerCommands {
     static let candidateTransactionIDs = stride(from: 0x1F, through: 0xFF, by: 0x20).map(UInt8.init)
 
+    /// OpenRazer requests the serial with a 22-byte data size
+    /// (razer_chroma_standard_get_serial in driver/razerchromacommon.c).
     static func serialNumber(transactionID: UInt8) -> RazerReport {
-        RazerReport(transactionID: transactionID, dataSize: 2, commandClass: 0x00, commandID: 0x82)
+        RazerReport(transactionID: transactionID, dataSize: 0x16, commandClass: 0x00, commandID: 0x82)
     }
 
     static func battery(transactionID: UInt8) -> RazerReport {

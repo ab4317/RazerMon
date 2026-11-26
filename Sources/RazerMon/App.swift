@@ -21,6 +21,10 @@ final class RazerMonApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var permissionGuide: PermissionGuideWindowController?
     private var permissionPromptIsShowing = false
     private let deviceRegistry = HIDDeviceRegistry()
+    /// Refreshes and diagnostics both exchange reports with the devices; a
+    /// serial queue keeps their requests and responses from interleaving.
+    private let hidQueue = DispatchQueue(label: "RazerMon.hid", qos: .utility)
+    private var isCollectingDiagnostics = false
     private var lastRefreshDate: Date?
 
     private enum RefreshPolicy {
@@ -91,6 +95,31 @@ final class RazerMonApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menuTrackingTimer = nil
     }
     @objc private func refreshFromMenu() { refreshIfAllowed(force: true, forceBatteryRefresh: true) }
+    @objc private func copyDiagnostics() {
+        guard !isCollectingDiagnostics else { return }
+        isCollectingDiagnostics = true
+        let info = Bundle.main.infoDictionary
+        let appVersion = "\(info?["CFBundleShortVersionString"] as? String ?? "?") (\(info?["CFBundleVersion"] as? String ?? "?"))"
+        let systemVersion = ProcessInfo.processInfo.operatingSystemVersionString
+        let granted = hasInputMonitoringPermission
+        hidQueue.async { [weak self] in
+            let report = RazerDiagnostics.report(
+                appVersion: appVersion, systemVersion: systemVersion, inputMonitoringGranted: granted
+            )
+            DispatchQueue.main.async {
+                guard let self else { return }
+                self.isCollectingDiagnostics = false
+                NSPasteboard.general.clearContents()
+                NSPasteboard.general.setString(report, forType: .string)
+                let alert = NSAlert()
+                alert.messageText = L10n.text("diagnostics.copied.title")
+                alert.informativeText = L10n.text("diagnostics.copied.message")
+                alert.alertStyle = .informational
+                NSApp.activate(ignoringOtherApps: true)
+                alert.runModal()
+            }
+        }
+    }
     @objc private func showPermissionFromMenu() { showPermissionPrompt() }
     @objc private func toggleLaunchAtLogin() {
         let service = SMAppService.mainApp
@@ -245,7 +274,7 @@ final class RazerMonApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
         isRefreshing = true
         let cachedDevices = cachedDevices
-        DispatchQueue.global(qos: .utility).async { [weak self] in
+        hidQueue.async { [weak self] in
             let result = Result {
                 try RazerMonitor.readDevices(
                     connectedProductIDs: connectedProductIDs,
@@ -300,10 +329,14 @@ final class RazerMonApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
             addDisabled(isRefreshing ? L10n.text("menu.reading_devices") : (errorMessage ?? L10n.text("menu.no_devices")))
         } else {
             for device in devices {
-                let batteryText = device.batteryPercent.map { "\($0)%" } ?? L10n.text("menu.reading_battery")
+                let batteryText = device.batteryUnavailable
+                    ? L10n.text("menu.battery_unavailable")
+                    : device.batteryPercent.map { "\($0)%" } ?? L10n.text("menu.reading_battery")
                 let item = NSMenuItem(title: L10n.format("menu.device_summary", device.name, batteryText), action: nil, keyEquivalent: "")
                 item.view = DeviceMenuItemView(device: device)
-                item.toolTip = L10n.format("menu.serial_number", device.serialNumber)
+                item.toolTip = device.batteryUnavailable
+                    ? L10n.text("menu.battery_unavailable.help")
+                    : L10n.format("menu.serial_number", device.serialNumber)
                 // A disabled NSMenuItem is always shown in gray. These entries
                 // are informational, but the connected devices are healthy.
                 item.isEnabled = true
@@ -323,6 +356,10 @@ final class RazerMonApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
             launchAtLogin.toolTip = L10n.text("menu.launch_at_login.approval_required")
         }
         menu.addItem(launchAtLogin)
+        let diagnostics = NSMenuItem(title: L10n.text("menu.copy_diagnostics"), action: #selector(copyDiagnostics), keyEquivalent: "")
+        diagnostics.target = self
+        diagnostics.isEnabled = hasInputMonitoringPermission
+        menu.addItem(diagnostics)
         menu.addItem(.separator())
         let exit = NSMenuItem(title: L10n.text("menu.exit"), action: #selector(exitApp), keyEquivalent: "q")
         exit.target = self
@@ -354,6 +391,7 @@ private final class DeviceMenuItemView: NSView {
         name.textColor = .labelColor
 
         let percentage = NSTextField(labelWithString: device.batteryPercent.map { "\($0)%" } ?? "—")
+        toolTip = device.batteryUnavailable ? L10n.text("menu.battery_unavailable.help") : nil
         percentage.translatesAutoresizingMaskIntoConstraints = false
         percentage.alignment = .right
         percentage.font = .monospacedDigitSystemFont(ofSize: NSFont.systemFontSize, weight: .regular)
@@ -392,6 +430,8 @@ private final class DeviceMenuItemView: NSView {
         setAccessibilityRole(.staticText)
         if let batteryPercent = device.batteryPercent {
             setAccessibilityLabel(L10n.format("accessibility.device_battery", device.name, batteryPercent))
+        } else if device.batteryUnavailable {
+            setAccessibilityLabel(L10n.format("accessibility.device_unavailable", device.name))
         } else {
             setAccessibilityLabel(L10n.format("accessibility.device_reading", device.name))
         }

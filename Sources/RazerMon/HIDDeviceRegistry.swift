@@ -48,12 +48,13 @@ final class HIDDeviceRegistry {
         IOHIDManagerClose(manager, IOOptionBits(kIOHIDOptionsTypeNone))
     }
 
+    /// Any interface of a catalog product marks it as connected. Which
+    /// interface answers Razer reports is decided later by HIDTransport, so a
+    /// product whose control interface macOS describes unexpectedly is still
+    /// listed (as unavailable) instead of silently missing from the menu.
     private func deviceMatched(_ device: IOHIDDevice) {
         let productID = Self.intProperty(kIOHIDProductIDKey, of: device)
-        guard candidateIDs.contains(productID),
-              Self.intProperty(kIOHIDPrimaryUsagePageKey, of: device) == kHIDPage_GenericDesktop,
-              Self.isKeyboardOrMouse(device),
-              Self.intProperty(kIOHIDMaxFeatureReportSizeKey, of: device) >= RazerReport.length else { return }
+        guard candidateIDs.contains(productID) else { return }
 
         let key = ObjectIdentifier(device)
         guard devices.updateValue(productID, forKey: key) == nil else { return }
@@ -78,12 +79,5 @@ final class HIDDeviceRegistry {
     private static func intProperty(_ key: String, of device: IOHIDDevice) -> Int {
         guard let value = IOHIDDeviceGetProperty(device, key as CFString) else { return 0 }
         return (value as? NSNumber)?.intValue ?? 0
-    }
-
-    private static func isKeyboardOrMouse(_ device: IOHIDDevice) -> Bool {
-        switch intProperty(kIOHIDPrimaryUsageKey, of: device) {
-        case kHIDUsage_GD_Mouse, kHIDUsage_GD_Keyboard: true
-        default: false
-        }
     }
 }
