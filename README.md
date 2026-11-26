@@ -16,6 +16,16 @@ Homebrew installs `RazerMon.app` directly into `/Applications`.
 
 You can also download `RazerMon-0.3.2-arm64.dmg` from the [latest release](https://github.com/ab4317/RazerMon/releases/latest), open it, and drag RazerMon into Applications.
 
+### First launch
+
+RazerMon is not notarized by Apple, because notarization requires a paid Apple Developer Program membership. The first time you open a downloaded copy, macOS shows a warning that Apple could not verify it is free of malware. This is the standard message for any app that has not been notarized; it does not mean a problem was found. To open RazerMon:
+
+1. Click **Done** in the warning.
+2. Open **System Settings > Privacy & Security** and scroll to **Security**.
+3. Click **Open Anyway** next to the RazerMon message, then confirm.
+
+On macOS 14 and earlier, Control-click RazerMon in Applications and choose **Open** instead. You need to do this once per installed version. If you would rather not run a prebuilt app, [build it from source](#build-from-source) or inspect what it is allowed to do under [Privacy and Permissions](#privacy-and-permissions).
+
 <p align="center">
   <img src="docs/assets/razermon-menu.png" width="520" alt="RazerMon showing three wireless devices and their battery levels">
 </p>

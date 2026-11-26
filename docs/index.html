@@ -136,6 +136,10 @@
         <p>No. It communicates through macOS HID APIs and requires no Synapse installation, kernel extension, or additional driver.</p>
       </details>
       <details>
+        <summary>Why does macOS say it could not verify RazerMon?</summary>
+        <p>RazerMon is not notarized by Apple, because notarization requires a paid developer membership. macOS shows this warning for any downloaded app that has not been notarized; it does not mean a problem was found. Click Done, then open System Settings &gt; Privacy &amp; Security and click Open Anyway.</p>
+      </details>
+      <details>
         <summary>Why is Input Monitoring permission required?</summary>
         <p>macOS requires it before an app can open keyboard and mouse HID devices. RazerMon uses that access only to send read-only battery queries. It does not record keystrokes or pointer activity. Because the app is ad-hoc signed, macOS asks for the permission again after each update.</p>
       </details>

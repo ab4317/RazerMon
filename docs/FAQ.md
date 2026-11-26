@@ -20,6 +20,10 @@ RazerMon supports compatible HyperSpeed and dedicated USB receiver endpoints. It
 
 No. Over Bluetooth, macOS does not expose the 90-byte HID feature report that the Razer battery query uses, so the battery level cannot be read. Switch the device to 2.4 GHz mode and connect it through its USB receiver. Cable connections are not supported either.
 
+## Why does macOS say it could not verify RazerMon?
+
+RazerMon is not notarized by Apple, because notarization requires a paid Apple Developer Program membership. macOS shows this warning the first time you open any downloaded app that has not been notarized; it does not mean a problem was found. Click **Done**, open **System Settings > Privacy & Security**, and click **Open Anyway** next to the RazerMon message. On macOS 14 and earlier, Control-click RazerMon in Applications and choose **Open**. The source code is public, and you can check what the app is allowed to do as described under "Does RazerMon access the network or my files?".
+
 ## Why does RazerMon need Input Monitoring permission?
 
 macOS protects access to keyboard and mouse HID devices and requires Input Monitoring permission before an app can open them. RazerMon uses this access only to send read-only identity and battery queries to compatible hardware. It does not record keystrokes or pointer activity.
