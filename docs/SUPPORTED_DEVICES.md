@@ -1,13 +1,14 @@
 # Supported Devices
 
-RazerMon includes battery-query mappings for the wireless keyboards and mice listed below. The catalog is based on OpenRazer device data and covers wireless, HyperSpeed, receiver, and Bluetooth product endpoints. Actual battery reporting can vary with firmware, connection mode, and receiver configuration.
+RazerMon includes battery-query mappings for the wireless keyboards and mice listed below. The catalog is based on OpenRazer device data and covers the USB product IDs of wireless, HyperSpeed, and receiver endpoints. Actual battery reporting can vary with firmware and receiver configuration.
 
-Wired-only devices are intentionally excluded.
+Only 2.4 GHz USB receiver connections are supported. Bluetooth connections are not supported because macOS does not expose the 90-byte HID feature report the battery query needs over Bluetooth, and cable connections report a wired product ID that is not listed here. Wired-only devices are intentionally excluded.
 
 ## Keyboards
 
 - BlackWidow V3 Pro (Wireless) (`1532:025C`)
 - BlackWidow V3 Mini HyperSpeed (Wireless) (`1532:0271`)
+- Pro Type Ultra (Wireless) (`1532:027B`)
 - DeathStalker V2 Pro (Wireless) (`1532:0290`)
 - DeathStalker V2 Pro TKL (Wireless) (`1532:0296`)
 - BlackWidow V4 Mini HyperSpeed (Wireless) (`1532:02BA`)
@@ -29,7 +30,6 @@ Wired-only devices are intentionally excluded.
 - Basilisk Ultimate (Receiver) (`1532:0088`)
 - Naga Pro (Wireless) (`1532:0090`)
 - Orochi V2 (Receiver) (`1532:0094`)
-- Orochi V2 (Bluetooth) (`1532:0095`)
 - Pro Click Mini (Receiver) (`1532:009A`)
 - DeathAdder V2 X HyperSpeed (`1532:009C`)
 - Viper Mini Signature Edition (Wireless) (`1532:009F`)
@@ -54,4 +54,4 @@ Wired-only devices are intentionally excluded.
 
 ## Contributing Device Reports
 
-If your wireless Razer keyboard or mouse is missing or does not report its battery level, open a GitHub issue with the product name, connection mode, and USB product ID. Do not include serial numbers or other personally identifying device information.
+If your wireless Razer keyboard or mouse is missing or does not report its battery level, open a GitHub issue with the product name, connection mode, and USB product ID. If the device is listed but shows no battery level, choose **Copy Diagnostics** from the RazerMon menu and paste the report into the issue; it omits serial numbers. Do not include serial numbers or other personally identifying device information.

@@ -25,6 +25,15 @@
     },
     {
       "vendorID": "1532",
+      "productID": "027B",
+      "name": "Razer Pro Type Ultra (Wireless)",
+      "kind": "keyboard",
+      "batteryProtocol": "hyperspeed-v1",
+      "verified": false,
+      "note": "Not in the pinned OpenRazer revision. ID and battery handling (same path as DeathStalker V2 Pro wireless, transaction ID 0x9F) from openrazer/openrazer PR #2888; ID confirmed by a maintainer in issue #2992."
+    },
+    {
+      "vendorID": "1532",
       "productID": "0290",
       "name": "Razer DeathStalker V2 Pro (Wireless)",
       "kind": "keyboard",
@@ -166,14 +175,6 @@
       "kind": "mouse",
       "batteryProtocol": "hyperspeed-v1",
       "verified": true
-    },
-    {
-      "vendorID": "1532",
-      "productID": "0095",
-      "name": "Razer Orochi V2 (Bluetooth)",
-      "kind": "mouse",
-      "batteryProtocol": "hyperspeed-v1",
-      "verified": false
     },
     {
       "vendorID": "1532",
