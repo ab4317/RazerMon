@@ -24,7 +24,7 @@ RazerMon is not notarized by Apple, because notarization requires a paid Apple D
 2. Open **System Settings > Privacy & Security** and scroll to **Security**.
 3. Click **Open Anyway** next to the RazerMon message, then confirm.
 
-On macOS 14 and earlier, Control-click RazerMon in Applications and choose **Open** instead. You need to do this once per installed version. If you would rather not run a prebuilt app, [build it from source](#build-from-source) or inspect what it is allowed to do under [Privacy and Permissions](#privacy-and-permissions).
+On macOS 14 and earlier, Control-click RazerMon in Applications and choose **Open** instead. macOS may ask again after an update. If you would rather not run a prebuilt app, [build it from source](#build-from-source) or inspect what it is allowed to do under [Privacy and Permissions](#privacy-and-permissions).
 
 <p align="center">
   <img src="docs/assets/razermon-menu.png" width="520" alt="RazerMon showing three wireless devices and their battery levels">
